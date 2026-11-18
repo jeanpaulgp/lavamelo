@@ -1,0 +1,90 @@
+/* Lava-Melo — tema agua/limpieza */
+:root {
+  --lm-fondo: #eef4f8;
+  --lm-primario: #0891b2;   /* cian 600 */
+  --lm-azul: #2563eb;
+  --lm-navy: #0f2a4a;
+  --lm-verde: #16a34a;
+  --lm-ambar: #d97706;
+  --lm-rojo: #dc2626;
+}
+
+body {
+  background: var(--lm-fondo);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #1e293b;
+}
+
+h1, h2, h3, .font-titulo { font-family: "Poppins", system-ui, sans-serif; color: var(--lm-navy); }
+
+.tarjeta { background: #fff; border-radius: 1rem; box-shadow: 0 2px 12px rgba(15, 42, 74, .07); }
+
+/* Botones */
+.btn { display: inline-flex; align-items: center; gap: .4rem; border-radius: .6rem; padding: .5rem 1rem;
+  font-weight: 600; font-size: .9rem; transition: background .15s, box-shadow .15s; cursor: pointer; }
+.btn:focus-visible, .campo:focus-visible, a:focus-visible { outline: 3px solid #67e8f9; outline-offset: 2px; }
+.btn-primario { background: var(--lm-primario); color: #fff; }
+.btn-primario:hover { background: #0e7490; }
+.btn-verde { background: var(--lm-verde); color: #fff; }
+.btn-verde:hover { background: #15803d; }
+.btn-azul { background: var(--lm-azul); color: #fff; }
+.btn-azul:hover { background: #1d4ed8; }
+.btn-suave { background: #e0f2fe; color: #075985; }
+.btn-suave:hover { background: #bae6fd; }
+.btn-peligro { background: #fee2e2; color: #b91c1c; }
+.btn-peligro:hover { background: #fecaca; }
+.btn-sm { padding: .3rem .65rem; font-size: .8rem; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.campo { width: 100%; border: 1px solid #cbd5e1; border-radius: .6rem; padding: .5rem .75rem; background: #fff; }
+.campo:focus { border-color: var(--lm-primario); }
+label.etiqueta { display: block; font-size: .85rem; font-weight: 600; color: #334155; margin-bottom: .25rem; }
+
+/* Tablas */
+.tabla { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.tabla th { text-align: left; font-weight: 600; color: #475569; background: #f1f7fb; padding: .6rem .75rem; }
+.tabla td { padding: .6rem .75rem; border-top: 1px solid #e2e8f0; vertical-align: middle; }
+.tabla tr:hover td { background: #f8fbfd; }
+
+/* Estados de orden */
+.estado { display: inline-block; padding: .15rem .6rem; border-radius: 999px; font-size: .75rem; font-weight: 700; white-space: nowrap; }
+.estado-EN_ESPERA { background: #fef3c7; color: #92400e; }
+.estado-EN_PROCESO { background: #dbeafe; color: #1e40af; }
+.estado-LISTO { background: #dcfce7; color: #166534; }
+.estado-FINALIZADO { background: #e5e7eb; color: #374151; }
+.borde-EN_ESPERA { border-left: 5px solid #f59e0b; }
+.borde-EN_PROCESO { border-left: 5px solid #3b82f6; }
+.borde-LISTO { border-left: 5px solid #22c55e; }
+.borde-FINALIZADO { border-left: 5px solid #9ca3af; }
+
+.alerta-stock { background: #fffbeb; border: 1px solid #fcd34d; color: #92400e; }
+.fila-stock-bajo td { background: #fffbeb; }
+
+/* Barra lateral */
+.menu-item { display: flex; align-items: center; gap: .7rem; padding: .6rem .9rem; border-radius: .7rem; color: #cbd5e1; font-weight: 500; }
+.menu-item:hover { background: rgba(255, 255, 255, .08); color: #fff; }
+.menu-item.activo { background: var(--lm-primario); color: #fff; }
+
+/* Login: burbujas sutiles */
+.login-fondo { background: linear-gradient(160deg, #0f2a4a 0%, #0e7490 55%, #22d3ee 100%); position: relative; overflow: hidden; }
+.burbuja { position: absolute; bottom: -120px; border-radius: 50%; background: rgba(255, 255, 255, .12);
+  border: 1px solid rgba(255, 255, 255, .25); animation: subir linear infinite; }
+@keyframes subir { to { transform: translateY(-120vh); } }
+@media (prefers-reduced-motion: reduce) { .burbuja { animation: none; display: none; } }
+
+/* Modal */
+#modal-fondo { background: rgba(15, 42, 74, .45); }
+
+/* Toast */
+#toasts > div { animation: aparecer .2s ease-out; }
+@keyframes aparecer { from { opacity: 0; transform: translateY(8px); } }
+
+/* Recibo e impresión */
+.recibo { max-width: 380px; margin: 1.5rem auto; background: #fff; padding: 1.5rem; border-radius: 1rem;
+  box-shadow: 0 2px 12px rgba(15, 42, 74, .1); font-size: .9rem; }
+.recibo hr { border: 0; border-top: 1px dashed #94a3b8; margin: .8rem 0; }
+@media print {
+  body { background: #fff; }
+  .no-imprimir { display: none !important; }
+  .recibo { box-shadow: none; margin: 0 auto; padding: 0; max-width: 80mm; }
+}

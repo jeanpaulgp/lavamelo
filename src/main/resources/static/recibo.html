@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recibo · Lava-Melo</title>
+  <link rel="icon" href="/img/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <div class="no-imprimir max-w-md mx-auto p-4 flex gap-2 justify-end">
+    <button class="btn btn-primario" onclick="window.print()">🖨️ Imprimir</button>
+    <button class="btn btn-suave" onclick="window.close()">Cerrar</button>
+  </div>
+  <div id="recibo" class="recibo">Cargando…</div>
+
+<script src="/js/api.js"></script>
+<script>
+  const ordenId = new URLSearchParams(location.search).get('orden');
+  const cont = document.getElementById('recibo');
+
+  (async () => {
+    try {
+      const o = await api('/pagos/recibo/' + ordenId);
+      const items = o.servicios.map((s) =>
+        `<tr><td>${esc(s.nombre)}</td><td style="text-align:right">${cop(s.precio)}</td></tr>`).join('');
+      cont.innerHTML = `
+        <div style="text-align:center">
+          <img src="/img/logo.svg" alt="" style="width:56px;height:56px;margin:0 auto">
+          <h1 class="font-titulo" style="font-size:1.4rem;margin:.3rem 0">Lava-Melo</h1>
+          <p style="color:#64748b;font-size:.8rem">Recibo de pago</p>
+        </div>
+        <hr>
+        <p><strong>Recibo #${o.id}</strong></p>
+        <p>Fecha: ${fechaHora(o.pago.fecha)}</p>
+        <p>Cliente: ${esc(o.clienteNombre || '—')}</p>
+        <p>Documento: ${esc(o.clienteDocumento || '—')}</p>
+        <p>Vehículo: ${esc(o.placa || '')} · ${esc(o.vehiculo || '')}</p>
+        <p>Atendió: ${esc(o.operarioNombre || '—')}</p>
+        <hr>
+        <table style="width:100%;font-size:.9rem;border-collapse:collapse">
+          <thead><tr><th style="text-align:left">Servicio</th><th style="text-align:right">Valor</th></tr></thead>
+          <tbody>${items}</tbody>
+        </table>
+        <hr>
+        <p style="display:flex;justify-content:space-between;font-size:1.1rem;font-weight:700">
+          <span>TOTAL</span><span>${cop(o.total)}</span></p>
+        <p style="display:flex;justify-content:space-between">
+          <span>Método de pago</span><span>${METODOS[o.pago.metodo]}</span></p>
+        <hr>
+        <p style="text-align:center;color:#64748b;font-size:.8rem">¡Gracias por su visita!</p>`;
+      setTimeout(() => window.print(), 400);
+    } catch (e) {
+      cont.innerHTML = `<p style="color:#b91c1c;text-align:center">${esc(e.message)}</p>`;
+    }
+  })();
+</script>
+</body>
+</html>

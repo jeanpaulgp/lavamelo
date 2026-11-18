@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lava-Melo</title>
+  <link rel="icon" href="/img/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body class="min-h-screen">
+
+<div class="flex min-h-screen">
+  <!-- Barra lateral -->
+  <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-64 bg-[#0f2a4a] text-white flex flex-col
+         -translate-x-full md:translate-x-0 transition-transform" aria-label="Menú principal">
+    <a href="#/inicio" class="flex items-center gap-3 px-5 py-5 border-b border-white/10">
+      <img src="/img/logo.svg" alt="" class="w-9 h-9">
+      <span class="font-titulo text-xl font-bold" style="color:#fff">Lava-Melo</span>
+    </a>
+    <nav id="menu" class="flex-1 p-3 space-y-1 overflow-y-auto"></nav>
+    <div class="p-4 border-t border-white/10 text-sm">
+      <p id="usuario-nombre" class="font-semibold"></p>
+      <p id="usuario-rol" class="text-cyan-200 text-xs mb-3"></p>
+      <button id="btn-salir" class="btn btn-sm w-full justify-center bg-white/10 hover:bg-white/20 text-white">Cerrar sesión</button>
+    </div>
+  </aside>
+  <div id="sidebar-velo" class="fixed inset-0 bg-black/30 z-30 hidden md:hidden"></div>
+
+  <!-- Contenido -->
+  <div class="flex-1 min-w-0 flex flex-col">
+    <header class="md:hidden flex items-center gap-3 bg-white px-4 py-3 shadow-sm sticky top-0 z-20">
+      <button id="btn-menu" class="btn btn-suave btn-sm" aria-label="Abrir menú" aria-controls="sidebar">☰</button>
+      <img src="/img/logo.svg" alt="" class="w-7 h-7">
+      <span class="font-titulo font-bold text-[#0f2a4a]">Lava-Melo</span>
+    </header>
+    <main id="vista" class="p-4 md:p-8 max-w-7xl w-full mx-auto" tabindex="-1"></main>
+  </div>
+</div>
+
+<!-- Modal genérico -->
+<div id="modal-fondo" class="fixed inset-0 z-50 hidden items-start md:items-center justify-center p-4 overflow-y-auto">
+  <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo" class="tarjeta w-full max-w-xl p-6 my-8">
+    <div class="flex items-center justify-between mb-4">
+      <h2 id="modal-titulo" class="text-xl font-semibold"></h2>
+      <button id="modal-cerrar" class="btn btn-suave btn-sm" aria-label="Cerrar">✕</button>
+    </div>
+    <div id="modal-cuerpo"></div>
+  </div>
+</div>
+
+<div id="toasts" class="fixed bottom-4 right-4 z-[60] space-y-2" aria-live="polite"></div>
+
+<script src="/js/api.js"></script>
+<script src="/js/views/dashboard.js"></script>
+<script src="/js/views/clientes.js"></script>
+<script src="/js/views/vehiculos.js"></script>
+<script src="/js/views/servicios.js"></script>
+<script src="/js/views/ordenes.js"></script>
+<script src="/js/views/pagos.js"></script>
+<script src="/js/views/inventario.js"></script>
+<script src="/js/views/compras.js"></script>
+<script src="/js/views/proveedores.js"></script>
+<script src="/js/views/empleados.js"></script>
+<script src="/js/views/reportes.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>

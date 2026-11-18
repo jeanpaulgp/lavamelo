@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ingresar · Lava-Melo</title>
+  <link rel="icon" href="/img/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body class="min-h-screen flex flex-col md:flex-row">
+
+  <!-- Encabezado temático con burbujas -->
+  <section class="login-fondo md:w-1/2 min-h-[260px] md:min-h-screen flex items-center justify-center p-10 text-white" aria-hidden="false">
+    <div id="burbujas" aria-hidden="true"></div>
+    <div class="relative z-10 text-center">
+      <img src="/img/logo.svg" alt="" class="w-24 h-24 mx-auto drop-shadow-lg">
+      <h1 class="font-titulo text-4xl md:text-5xl font-bold mt-4" style="color:#fff">Lava-Melo</h1>
+      <p class="mt-3 text-cyan-50 text-lg">Gestión del lavadero: clientes, órdenes, pagos e inventario.</p>
+      <p class="mt-6 text-2xl" aria-hidden="true">👥 🚗 🧼 📝 💳 📦 📊</p>
+    </div>
+  </section>
+
+  <main class="md:w-1/2 flex items-center justify-center p-6">
+    <form id="form" class="tarjeta w-full max-w-sm p-8 space-y-5" novalidate>
+      <div>
+        <h2 class="text-2xl font-semibold">Iniciar sesión</h2>
+        <p class="text-slate-500 text-sm mt-1">Ingrese con su usuario de empleado.</p>
+      </div>
+      <div>
+        <label class="etiqueta" for="usuario">Usuario</label>
+        <input class="campo" id="usuario" name="usuario" autocomplete="username" required autofocus>
+      </div>
+      <div>
+        <label class="etiqueta" for="password">Contraseña</label>
+        <input class="campo" id="password" name="password" type="password" autocomplete="current-password" required>
+      </div>
+      <p id="error" role="alert" class="hidden text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg p-2"></p>
+      <button class="btn btn-primario w-full justify-center py-2.5" type="submit" id="btn">Ingresar</button>
+    </form>
+  </main>
+
+<script>
+  // Burbujas decorativas
+  const cont = document.getElementById('burbujas');
+  for (let i = 0; i < 14; i++) {
+    const b = document.createElement('span');
+    const t = 20 + Math.random() * 70;
+    b.className = 'burbuja';
+    Object.assign(b.style, {
+      width: t + 'px', height: t + 'px', left: Math.random() * 100 + '%',
+      animationDuration: 9 + Math.random() * 12 + 's', animationDelay: -Math.random() * 15 + 's'
+    });
+    cont.appendChild(b);
+  }
+
+  // Si ya hay sesión, ir directo a la app
+  fetch('/api/auth/me', { cache: 'no-store' }).then(r => { if (r.ok) location.href = '/'; });
+
+  const form = document.getElementById('form');
+  const err = document.getElementById('error');
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    err.classList.add('hidden');
+    const usuario = form.usuario.value.trim(), password = form.password.value;
+    if (!usuario || !password) {
+      err.textContent = 'Ingrese usuario y contraseña.';
+      err.classList.remove('hidden');
+      return;
+    }
+    const btn = document.getElementById('btn');
+    btn.disabled = true;
+    try {
+      const r = await fetch('/api/auth/login', {
+        method: 'POST', cache: 'no-store', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ usuario, password })
+      });
+      if (!r.ok) throw new Error((await r.json().catch(() => ({}))).detail || 'No se pudo iniciar sesión');
+      location.href = '/';
+    } catch (e) {
+      err.textContent = e.message;
+      err.classList.remove('hidden');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
